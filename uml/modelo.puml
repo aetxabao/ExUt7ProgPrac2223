@@ -1,0 +1,109 @@
+@startuml
+class modelo.Maestro {
+- Map<Integer,Producto> mapaProductos
++ <<Create>> Maestro()
++ void loadProductos(String)
++ void loadDescuentos(String)
++ void emptyProductos()
++ Producto getProducto(int)
++ int cantidadProductos()
++ String[][] getProductosAsMatrixOfStrings()
+}
+class modelo.Compra {
+~ Map<Producto,Integer> productosCantidades
+~ int numSocio
+~ {static} int contFactura
+~ int numFactura
++ <<Create>> Compra()
++ void setNumSocio(int)
++ void resetCompra()
++ void addProducto(Producto)
++ int cantidadDeArticulosComprados()
++ Map<Producto,Integer> getProductosCantidades()
+- int getAnchoTicket()
++ String getTicket()
+}
+class modelo.Producto {
+- int id
+- String nombre
+- double precio
+- String descuento
++ <<Create>> Producto(int,String,double)
++ <<Create>> Producto(int,String,double,String)
++ int compareTo(Producto)
++ String toString()
++ String[] toStringArray()
++ Producto clone()
+}
+class modelo.GeneradorDescuentos {
+- {static} boolean esSocio
++ {static} void setEsSocio(boolean)
++ {static} List<ADescuento> getDescuentos(Map<Producto,Integer>)
++ {static} double getTotalSinDescuentos(Map<Producto,Integer>)
++ {static} List<ADescuento> filtroDescuentos(boolean,List<ADescuento>)
++ {static} double getTotalDescuentos(List<ADescuento>)
+}
+class modelo.Tienda {
+- String nombre
+- Maestro maestro
+- List<Compra> listaCompras
+- Compra compra
++ <<Create>> Tienda(String)
++ void run()
++ void estadisticas()
+- void definirOrden()
++ void setOrden(EOrdenTicket)
+- void listarProductos()
+- void nuevaCompra()
+- int cantidadProductosDisponibles()
+- int cantidadDeArticulosEnCompra()
++ void iniCompra()
++ void compra(int)
++ void finCompra()
++ void setNumSocio(int)
+}
+class modelo.EstadisticasDescuentos {
++ {static} String getResumen(List<Compra>)
+}
+class modelo.GeneradorComparadorProductos {
+- {static} EOrdenTicket orden
++ {static} Comparator<Producto> getComparador()
++ {static} EOrdenTicket getOrden()
++ {static} void setOrden(EOrdenTicket)
+}
+
+abstract class descuentos.ADescuento {
+~ boolean soloParaSocios
+~ Producto producto
+~ int cantidad
++ <<Create>> ADescuento(boolean,Producto,int)
++ {abstract}double getValorDescuento()
+# double getImporteCantidadProducto()
++ String toString()
+}
+
+Comparable <|.up. modelo.Producto
+Cloneable <|.up. modelo.Producto
+modelo.Tienda o-- modelo.Compra
+modelo.Tienda --> modelo.Compra
+modelo.Compra o-- modelo.Producto
+modelo.Compra ..> modelo.Producto
+modelo.Maestro o-- modelo.Producto
+modelo.Tienda --> modelo.Maestro
+modelo.Tienda ..> modelo.EstadisticasDescuentos
+modelo.EstadisticasDescuentos ..> modelo.Compra
+modelo.Tienda ..> modelo.GeneradorComparadorProductos
+modelo.GeneradorComparadorProductos ..> modelo.Producto
+modelo.Compra ..> modelo.GeneradorDescuentos
+modelo.GeneradorDescuentos ..> modelo.Producto
+
+descuentos.ADescuento --> modelo.Producto
+modelo.GeneradorDescuentos .up.> descuentos.ADescuento
+
+
+descuentos.ADescuento <|-- descuentos.DescuentoPorcentaje
+descuentos.ADescuento <|-- descuentos.DescuentoSegundo
+descuentos.ADescuento <|-- descuentos.DescuentoCaducidad
+descuentos.ADescuento <|-- descuentos.DescuentoNxM
+
+@enduml

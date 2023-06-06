@@ -1,0 +1,53 @@
+@startuml
+class descuentos.DescuentoPorcentaje {
+~ int porcentaje
++ <<Create>> DescuentoPorcentaje(boolean,Producto,int,int)
++ double getValorDescuento()
+}
+class descuentos.DescuentoSegundo {
+~ int porcentaje
++ <<Create>> DescuentoSegundo(boolean,Producto,int,int)
++ double getValorDescuento()
+}
+class descuentos.DescuentoCaducidad {
+~ int porcentajePrimero
+~ int porcentajeResto
++ <<Create>> DescuentoCaducidad(boolean,Producto,int,int,int)
++ double getValorDescuento()
+}
+class descuentos.DescuentoNxM {
+~ int n
+~ int m
++ <<Create>> DescuentoNxM(boolean,Producto,int,int,int)
++ double getValorDescuento()
+}
+abstract class descuentos.ADescuento {
+~ boolean soloParaSocios
+~ Producto producto
+~ int cantidad
++ <<Create>> ADescuento(boolean,Producto,int)
++ {abstract}double getValorDescuento()
+# double getImporteCantidadProducto()
++ String toString()
+}
+
+class modelo.Producto {
+- int id
+- String nombre
+- double precio
+- String descuento
++ <<Create>> Producto(int,String,double)
++ <<Create>> Producto(int,String,double,String)
++ int compareTo(Producto)
++ String toString()
++ String[] toStringArray()
++ Producto clone()
+}
+
+descuentos.ADescuento <|-- descuentos.DescuentoPorcentaje
+descuentos.ADescuento <|-- descuentos.DescuentoSegundo
+descuentos.ADescuento <|-- descuentos.DescuentoCaducidad
+descuentos.ADescuento <|-- descuentos.DescuentoNxM
+
+descuentos.ADescuento -up-> modelo.Producto
+@enduml
