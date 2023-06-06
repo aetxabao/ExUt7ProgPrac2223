@@ -13,11 +13,26 @@ public class GeneradorComparadorProductos {
     public static Comparator<Producto> getComparador() {
         switch (orden){
             case ORDEN_PRECIO_DES:
-                return null;
+                return new Comparator<Producto>() {
+                    @Override
+                    public int compare(Producto o1, Producto o2) {
+                        return (int) ((o2.getPrecio() - o1.getPrecio())*100);
+                    }
+                };
             case ORDEN_PRECIO_ASC:
-                return null;
+                return new Comparator<Producto>() {
+                    @Override
+                    public int compare(Producto o1, Producto o2) {
+                        return (int) ((o1.getPrecio() - o2.getPrecio())*100);
+                    }
+                };
             case ORDEN_NOMBRE:
-                return null;
+                return new Comparator<Producto>() {
+                    @Override
+                    public int compare(Producto o1, Producto o2) {
+                        return o1.getNombre().compareTo(o2.getNombre());
+                    }
+                };
         }
         return null;
     }

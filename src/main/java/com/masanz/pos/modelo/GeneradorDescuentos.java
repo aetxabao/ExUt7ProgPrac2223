@@ -54,10 +54,16 @@ public class GeneradorDescuentos {
                     list.add(dto);
                     break;
                 case CAD:
-                    //TODO: getDescuentos DescuentoCaducidad
+                    i = s.indexOf("_");
+                    n = Integer.valueOf(s.substring(0,i));
+                    m = Integer.valueOf(s.substring(i+1));
+                    dto = new DescuentoCaducidad(esSoloParaSocios, producto, cantidad, n, m);
+                    list.add(dto);
                     break;
                 case SEG:
-                    //TODO: getDescuentos DescuentoSegundo
+                    n = Integer.valueOf(s);
+                    dto = new DescuentoSegundo(esSoloParaSocios, producto, cantidad, n);
+                    list.add(dto);
                     break;
             }
         }

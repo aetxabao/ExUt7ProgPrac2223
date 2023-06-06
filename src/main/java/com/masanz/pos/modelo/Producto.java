@@ -1,8 +1,6 @@
 package com.masanz.pos.modelo;
 
-
-//TODO: Producto debe implementar las interfaces Comparable y Cloneable
-public class Producto implements Comparable<Producto> {
+public class Producto implements Comparable<Producto>, Cloneable {
     private int id;
     private String nombre;
     private double precio;
@@ -20,12 +18,22 @@ public class Producto implements Comparable<Producto> {
     }
 
     @Override
+    public int compareTo(Producto other) {
+        return this.nombre.compareTo(other.nombre);
+    }
+
+    @Override
     public String toString() {
         return nombre;
     }
 
     public String[] toStringArray() {
         return new String[] { String.valueOf(id), nombre, String.format("%.2f", precio), descuento };
+    }
+
+    @Override
+    public Producto clone(){
+        return new Producto(id, nombre, precio, descuento);
     }
 
     public int getId() {
@@ -59,10 +67,4 @@ public class Producto implements Comparable<Producto> {
     public void setDescuento(String descuento) {
         this.descuento = descuento;
     }
-
-    @Override
-    public int compareTo(Producto o) {
-        return Integer.compare(this.id, o.id);
-    }
-
 }

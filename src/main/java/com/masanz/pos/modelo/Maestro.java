@@ -41,8 +41,7 @@ public class Maestro {
     }
 
     public Producto getProducto(int i){
-        //TODO: getProducto debe devolver un clone del producto
-        return mapaProductos.get(i);
+        return mapaProductos.get(i).clone();
     }
 
     public int cantidadProductos() { return mapaProductos.size(); }
